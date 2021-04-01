@@ -27,8 +27,8 @@ public final class Constants {
     public static final String COIN_SYMBOL = "JUP";
     public static final String ACCOUNT_PREFIX = "JUP";
     public static final String PROJECT_NAME = "Jupiter";
-    public static final int MAX_NUMBER_OF_TRANSACTIONS = 255;
-    public static final int MIN_TRANSACTION_SIZE = 176;
+    public static final int MAX_NUMBER_OF_TRANSACTIONS = 6000;
+    public static final int MIN_TRANSACTION_SIZE = 1;
     public static final int MAX_PAYLOAD_LENGTH = MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;
     public static final long ONE_NXT = 100000000;
     public static final long MAX_BALANCE_NXT = Long.MAX_VALUE / (100 * ONE_NXT) * 100;
@@ -82,9 +82,9 @@ public final class Constants {
 
     public static final long MAX_ASSET_QUANTITY_QNT = MAX_BALANCE_NQT;
     public static final int MIN_ASSET_NAME_LENGTH = 3;
-    public static final int MAX_ASSET_NAME_LENGTH = 10;
+    public static final int MAX_ASSET_NAME_LENGTH = 100;
     public static final int MAX_ASSET_DESCRIPTION_LENGTH = 1000;
-    public static final int MAX_SINGLETON_ASSET_DESCRIPTION_LENGTH = 160;
+    public static final int MAX_SINGLETON_ASSET_DESCRIPTION_LENGTH = 1000;
     public static final int MAX_ASSET_TRANSFER_COMMENT_LENGTH = 1000;
     public static final int MAX_DIVIDEND_PAYMENT_ROLLBACK = 1441;
 
