@@ -88,6 +88,8 @@ public final class Constants {
     public static final int MAX_ASSET_TRANSFER_COMMENT_LENGTH = 1000;
     public static final int MAX_DIVIDEND_PAYMENT_ROLLBACK = 1441;
 
+    public static final int MAX_ASSET_DATA_LENGTH = Integer.MAX_VALUE;
+
     public static final int MAX_POLL_NAME_LENGTH = 100;
     public static final int MAX_POLL_DESCRIPTION_LENGTH = 1000;
     public static final int MAX_POLL_OPTION_LENGTH = 100;

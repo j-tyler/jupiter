@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 
 public final class Asset {
 
@@ -82,6 +83,10 @@ public final class Asset {
         return assetTable.get(assetDbKeyFactory.newKey(id), height);
     }
 
+    public static DbIterator<Asset> getAssets(Collection<Long> ids) {
+        return assetTable.getManyBy(new DbClause.InLongClause("asset_id", ids));
+    }
+
     public static DbIterator<Asset> getAssetsIssuedBy(long accountId, int from, int to) {
         return assetTable.getManyBy(new DbClause.LongClause("account_id", accountId), from, to);
     }
@@ -112,6 +117,7 @@ public final class Asset {
     private final long initialQuantityQNT;
     private long quantityQNT;
     private final byte decimals;
+    private final String data;
 
     private Asset(Transaction transaction, Attachment.ColoredCoinsAssetIssuance attachment) {
         this.assetId = transaction.getId();
@@ -122,6 +128,7 @@ public final class Asset {
         this.quantityQNT = attachment.getQuantityQNT();
         this.initialQuantityQNT = this.quantityQNT;
         this.decimals = attachment.getDecimals();
+        this.data = attachment.getData();
     }
 
     private Asset(ResultSet rs, DbKey dbKey) throws SQLException {
@@ -133,13 +140,14 @@ public final class Asset {
         this.initialQuantityQNT = rs.getLong("initial_quantity");
         this.quantityQNT = rs.getLong("quantity");
         this.decimals = rs.getByte("decimals");
+        this.data = rs.getString("data");
     }
 
     private void save(Connection con) throws SQLException {
         try (PreparedStatement pstmt = con.prepareStatement("MERGE INTO asset "
-                + "(id, account_id, name, description, initial_quantity, quantity, decimals, height, latest) "
+                + "(id, account_id, name, description, initial_quantity, quantity, decimals, data, height, latest) "
                 + "KEY(id, height) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, TRUE)")) {
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE)")) {
             int i = 0;
             pstmt.setLong(++i, this.assetId);
             pstmt.setLong(++i, this.accountId);
@@ -148,6 +156,7 @@ public final class Asset {
             pstmt.setLong(++i, this.initialQuantityQNT);
             pstmt.setLong(++i, this.quantityQNT);
             pstmt.setByte(++i, this.decimals);
+            pstmt.setString(++i, this.data);
             pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
@@ -179,6 +188,10 @@ public final class Asset {
 
     public byte getDecimals() {
         return decimals;
+    }
+
+    public String getData() {
+        return data;
     }
 
     public DbIterator<Account.AccountAsset> getAccounts(int from, int to) {

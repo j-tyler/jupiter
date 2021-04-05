@@ -240,6 +240,12 @@ public final class JSONData {
         return json;
     }
 
+    static JSONObject askOrder(Order.Ask order, Asset asset) {
+        JSONObject json = order(order, asset);
+        json.put("type", "ask");
+        return json;
+    }
+
     static JSONObject bidOrder(Order.Bid order) {
         JSONObject json = order(order);
         json.put("type", "bid");
@@ -256,6 +262,12 @@ public final class JSONData {
         json.put("height", order.getHeight());
         json.put("transactionIndex", order.getTransactionIndex());
         json.put("transactionHeight", order.getTransactionHeight());
+        return json;
+    }
+
+    private static JSONObject order(Order order, Asset asset) {
+        JSONObject json = order(order);
+        json.put("assetData", asset.getData());
         return json;
     }
 
@@ -1169,6 +1181,7 @@ public final class JSONData {
         Asset asset = Asset.getAsset(assetId);
         json.put("name", asset.getName());
         json.put("decimals", asset.getDecimals());
+        json.put("data", asset.getData());
     }
 
     private static void putExpectedTransaction(JSONObject json, Transaction transaction) {

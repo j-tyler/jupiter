@@ -18,6 +18,8 @@ package nxt.db;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public abstract class DbClause {
 
@@ -151,6 +153,17 @@ public abstract class DbClause {
         protected int set(PreparedStatement pstmt, int index) throws SQLException {
             pstmt.setLong(index, value);
             return index + 1;
+        }
+    }
+    public static final class InLongClause extends DbClause {
+
+        public InLongClause(String columnName, Collection<Long> values) {
+            super(" " + columnName + " in (" + values.stream().map(String::valueOf).collect(Collectors.joining(","))+ ") ");
+        }
+
+        @Override
+        protected int set(PreparedStatement pstmt, int index) throws SQLException {
+            return index;
         }
     }
 

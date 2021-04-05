@@ -645,6 +645,8 @@ class NxtDbVersion extends DbVersion {
             case 237:
                 apply("CREATE INDEX IF NOT EXISTS asset_dividend_height_idx ON asset_dividend (height)");
             case 238:
+                apply("ALTER TABLE asset ADD COLUMN IF NOT EXISTS data VARCHAR DEFAULT NULL");
+            case 239:
                 return;
             default:
                 throw new RuntimeException("Blockchain database inconsistent with code, at update " + nextUpdate

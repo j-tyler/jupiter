@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 
 public abstract class EntityDbTable<T> extends DerivedDbTable {
 
@@ -186,6 +187,19 @@ public abstract class EntityDbTable<T> extends DerivedDbTable {
                 throw new RuntimeException("Multiple records found");
             }
             return t;
+        }
+    }
+
+    public final DbIterator<T> getManyBy(DbClause dbClause) {
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM " + table
+                    + " WHERE " + dbClause.getClause() + (multiversion ? " AND latest = TRUE " : ""));
+            return getManyBy(con, pstmt, true);
+        } catch (SQLException e) {
+            DbUtils.close(con);
+            throw new RuntimeException(e.toString(), e);
         }
     }
 

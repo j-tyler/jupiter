@@ -214,6 +214,14 @@ public final class Convert {
         }
     }
 
+    public static byte[] toBytesNullSafe(String s) {
+        try {
+            return s == null ? new byte[0] : s.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e.toString(), e);
+        }
+    }
+
     public static byte[] toBytes(String s, boolean isText) {
         return isText ? toBytes(s) : parseHexString(s);
     }
